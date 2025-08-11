@@ -1,33 +1,41 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:gutenberg/models/service_model.dart';
 import 'package:gutenberg/widgets/core/app_color.dart';
+import 'package:gutenberg/widgets/core/contact_service.dart';
 import 'package:gutenberg/widgets/core/fonts.dart';
 import 'package:gutenberg/widgets/coustom/coustom_botton.dart';
 import 'package:gutenberg/widgets/coustom/footer.dart';
 import 'package:intl/intl.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:open_file/open_file.dart';
 
 class ApplyPage extends StatefulWidget {
-  const ApplyPage({super.key});
+  final dynamic Job;
+  const ApplyPage({super.key, required this.Job});
 
   @override
   State<ApplyPage> createState() => _ApplyPageState();
 }
 
 class _ApplyPageState extends State<ApplyPage> {
+  FilePickerResult? res;
+  PlatformFile? file;
   var nameController = TextEditingController();
   var noteController = TextEditingController();
   var emailController = TextEditingController();
   var formKey = GlobalKey<FormState>();
-  var dateController = TextEditingController(
-    text: DateFormat('dd/MM/yyy').format(DateTime.now()),
-  );
-  var timeController = TextEditingController(
-    text: DateFormat('hh:mm a').format(DateTime.now()),
-  );
+  PhoneNumber phoneNumber = PhoneNumber(
+    isoCode: 'PS',
+  ); // رمز الدولة الافتراضي، Palestine مثلاً
+  var phoneController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final job = widget.Job;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Meeting Form', style: getTitleStyle()),
+        toolbarHeight: 70,
+        title: Text('Application Form', style: getTitleStyle()),
         backgroundColor: AppColor.background,
         centerTitle: true,
       ),
@@ -35,26 +43,28 @@ class _ApplyPageState extends State<ApplyPage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    SizedBox(height: 10),
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        'Job Application: ${job['title']}',
 
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      child: Padding(
-                        padding: const EdgeInsets.all(3.0),
-                        child: Container(
-                          padding: EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 232, 231, 241),
-                          ),
+                        style: getBodyStyle(txtcolor: Colors.black),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 232, 231, 241),
+                        ),
+                        child: Form(
+                          key: formKey,
                           child: Column(
                             children: [
                               Text(
-                                'Welcome to the available job opportunities at Gutenberg!',
+                                'Please fill out the form below to submit your job application.',
+
                                 style: getBodyStyle(
                                   txtcolor: AppColor.secondary,
                                 ),
@@ -70,7 +80,7 @@ class _ApplyPageState extends State<ApplyPage> {
                                 },
                                 controller: nameController,
                                 decoration: InputDecoration(
-                                  label: Text('Full Name'),
+                                  label: Text('Full Name*'),
                                   hint: Text('Enter your full name'),
                                 ),
                               ),
@@ -80,124 +90,119 @@ class _ApplyPageState extends State<ApplyPage> {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter your email';
                                   }
-                                  int atIndex = value.indexOf('@');
-                                  if (atIndex == -1 ||
-                                      atIndex == value.length - 1) {
-                                    return 'Enter a valid email with text after "@"';
-                                  }
                                   return null;
                                 },
                                 controller: emailController,
                                 keyboardType: TextInputType.emailAddress,
                                 decoration: InputDecoration(
-                                  label: Text('Email'),
+                                  label: Text('Email*'),
                                   hint: Text('example@email.com'),
                                 ),
                               ),
+
                               SizedBox(height: 30),
-
-                              TextFormField(
-                                readOnly: true,
-                                onTap: () {
-                                  showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime.now(),
-                                    lastDate: DateTime(2028),
-                                  ).then((onValue) {
-                                    onValue != null
-                                        ? dateController.text = DateFormat(
-                                            'dd/MM/yyy',
-                                          ).format(onValue)
-                                        : null;
-                                  });
+                              InternationalPhoneNumberInput(
+                                onInputChanged: (PhoneNumber number) {
+                                  phoneNumber = number;
                                 },
-
-                                controller: dateController,
-                                decoration: InputDecoration(
-                                  label: Text('Meeting Date'),
+                                selectorConfig: SelectorConfig(
+                                  //selector= area code
+                                  selectorType: PhoneInputSelectorType.DROPDOWN,
+                                ),
+                                initialValue: phoneNumber,
+                                textFieldController: phoneController,
+                                formatInput: true,
+                                inputDecoration: InputDecoration(
+                                  labelText: 'Phone Number',
                                 ),
                               ),
+
                               SizedBox(height: 30),
 
                               TextFormField(
-                                readOnly: true,
-                                onTap: () {
-                                  showTimePicker(
-                                    context: context,
-                                    initialTime: TimeOfDay.now(),
-                                  ).then((onValue) {
-                                    onValue != null
-                                        ? timeController.text = onValue.format(
-                                            context,
-                                          )
-                                        : null;
-                                  });
-                                },
-                                controller: timeController,
-                                decoration: InputDecoration(
-                                  label: Text('Meeting Time'),
-                                ),
-                              ),
-                              SizedBox(height: 30),
-
-                              TextFormField(
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter the meeting purpose';
-                                  }
-                                  return null;
-                                },
                                 controller: noteController,
-                                maxLines: 4,
+                                maxLines: 6,
                                 decoration: InputDecoration(
-                                  label: Text('Meeting Purpose'),
-                                  helperText: 'Briefy describe the purpose',
+                                  label: Text('Cover Letter (Optional)'),
                                 ),
                               ),
-                              SizedBox(height: 60),
+                              SizedBox(height: 30),
+                              file != null
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Selected file: ${file!.name}'),
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              file = null;
+                                              res = null;
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    )
+                                  : Text(
+                                      'No resume selected',
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                              SizedBox(height: 10),
+
+                              ElevatedButton.icon(
+                                onPressed: () async {
+                                  FilePickerResult? result = await FilePicker
+                                      .platform
+                                      .pickFiles();
+
+                                  if (result != null) {
+                                    setState(() {
+                                      res = result;
+                                      file = result.files.first;
+                                    });
+                                    openfile(file!);
+                                  }
+                                },
+                                icon: Icon(Icons.upload_file),
+                                label: Text('Upload Resume'),
+                              ),
+                              SizedBox(height: 30),
 
                               coustom_botton(
-                                title: "Book Free Call",
-                                onTap: () {
+                                color: AppColor.secondary,
+                                title: "Send",
+                                icon: const Icon(
+                                  Icons.send_rounded,
+                                  color: Colors.white,
+                                ),
+                                onTap: () async {
                                   if (formKey.currentState!.validate()) {
-                                    Navigator.pop(context);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        backgroundColor: Colors.green,
-                                        content: const Text(
-                                          'Meeting booked successfully',
+                                    if (file == null) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Please upload your resume',
+                                          ),
                                         ),
-                                        action: SnackBarAction(
-                                          label: 'Undo',
-                                          onPressed: () {},
-                                        ),
-                                      ),
-                                    );
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: const Text(
-                                          'Please fill all required info!',
-                                        ),
-                                        action: SnackBarAction(
-                                          label: 'Undo',
-                                          onPressed: () {},
-                                        ),
-                                      ),
-                                    );
+                                      );
+                                      return;
+                                    }
                                   }
                                 },
-                                icon: Icon(Icons.call, color: Colors.white),
-                                color: AppColor.secondary,
                               ),
                             ],
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                ],
               ),
             ),
             footer(),
@@ -205,5 +210,9 @@ class _ApplyPageState extends State<ApplyPage> {
         ),
       ),
     );
+  }
+
+  void openfile(PlatformFile file) {
+    OpenFile.open(file.path!);
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gutenberg/pages/contact.dart';
-import 'package:gutenberg/pages/jops_page.dart';
+import 'package:gutenberg/pages/jobs_page.dart';
 import 'package:gutenberg/pages/services_page.dart';
 import 'package:gutenberg/pages/solutions_page.dart';
 import 'package:gutenberg/widgets/text_container.dart';
@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                           subTitle: 'Join Our team',
                           icon: Icons.work,
                           onTap: () {
-                            pushTO(context, JopsPage());
+                            pushTO(context, JobsPage());
                           },
                         ),
                       ],

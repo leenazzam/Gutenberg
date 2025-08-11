@@ -35,7 +35,6 @@ class _ContactUsState extends State<ContactUs> {
   var nameControllerTap2 = TextEditingController();
   var noteControllerTap2 = TextEditingController();
   var emailControllerTap2 = TextEditingController();
-  var phoneControllerTap2 = PhoneNumberEditingController();
   PhoneNumber phoneNumber = PhoneNumber(
     isoCode: 'PS',
   ); // رمز الدولة الافتراضي، Palestine مثلاً

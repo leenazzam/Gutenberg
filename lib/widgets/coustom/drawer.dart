@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gutenberg/pages/contact.dart';
 import 'package:gutenberg/pages/home_page.dart';
-import 'package:gutenberg/pages/jops_page.dart';
+import 'package:gutenberg/pages/jobs_page.dart';
 import 'package:gutenberg/pages/services_page.dart';
 import 'package:gutenberg/pages/solutions_page.dart';
 import 'package:gutenberg/widgets/coustom/logo.dart';
@@ -56,7 +56,7 @@ class coustomDrawer extends StatelessWidget {
                 ListTile(
                   title: Text('JOBS'),
                   onTap: () {
-                    pushTO(context, JopsPage());
+                    pushTO(context, JobsPage());
                   },
                 ),
               ],

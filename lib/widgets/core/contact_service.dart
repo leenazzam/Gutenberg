@@ -6,7 +6,7 @@ class ContactService {
     required String name,
     required String email,
     String? phone,
-    required String service,
+    String? service,
     required String message,
   }) async {
     final uri = Uri.parse('https://formspree.io/f/xqalgjyl');
