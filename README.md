@@ -6,15 +6,16 @@ I worked on building simple and responsive Flutter UI screens for a B2B platform
 ---
 
 ## 🎥 Demo Video
-[▶️ Watch the Demo](https://drive.google.com/file/d/1-W9qirRvrZJIkmxJu3uzPXmX8ijQlhSQ/view?usp=sharing)
+[▶️ Watch the Demo](https://drive.google.com/file/d/1TpQn1bQSgtCGLmPCXXDyw6EIP8_tKC6a/view?usp=drive_link)
+<img width="1080" height="2400" alt="Screenshot_1763592938" src="https://github.com/user-attachments/assets/e0f39608-e1b3-445d-89bd-7ef14b1c177a" />
+<img width="1080" height="2400" alt="Screenshot_1763592932" src="https://github.com/user-attachments/assets/41e9864c-5848-4fc3-9c09-5099b4fecf84" />
+<img width="1080" height="2400" alt="Screenshot_1763592925" src="https://github.com/user-attachments/assets/e9392445-e787-4538-8ef7-8aeeb3388fcf" />
+<img width="1080" height="2400" alt="Screenshot_1763592919" src="https://github.com/user-attachments/assets/e921ca0d-2a65-47ce-b000-70920ff4337a" />
+<img width="1080" height="2400" alt="Screenshot_1763592943" src="https://github.com/user-attachments/assets/2adc3f6d-467e-4444-b856-c164c99fd5e9" />
 
 ---
 
 ## 🖼️ Screenshots
-(Add your screenshots in the repo and update the paths)
-
-![Screenshot 1](images/screen1.png)  
-![Screenshot 2](images/screen2.png)
 
 ---
 
